@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.0 (2026-11-26)
+
+First release.
+
 ### Features
 
 - Menu bar panel that shows which Git working trees need a push, pull, or

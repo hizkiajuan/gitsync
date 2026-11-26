@@ -1805,13 +1805,26 @@ fn render_repository_group(
     };
 
     let mut controls = div().h_flex().flex_none().items_center().gap(px(2.0));
-    if let Some(destination) = ssh_destination.clone() {
+    {
+        let destination = ssh_destination.clone();
+        let (tooltip, title, detail) = match &destination {
+            Some(destination) => (
+                "Remove this computer from GitSync",
+                format!("Remove {destination} from GitSync?"),
+                macos::REMOVE_HOST_DETAIL,
+            ),
+            None => (
+                "Remove this Mac's repositories from GitSync",
+                format!("Remove every repository on {label} from GitSync?"),
+                macos::REMOVE_LOCAL_DETAIL,
+            ),
+        };
         controls = controls.child(
             Button::new(format!("settings-group-remove-{key}"))
                 .small()
                 .ghost()
                 .icon(IconName::Delete)
-                .tooltip("Remove this computer from GitSync")
+                .tooltip(tooltip)
                 .on_click({
                     let model = model.clone();
                     move |_, window, cx| {
@@ -1819,12 +1832,12 @@ fn render_repository_group(
                         let destination = destination.clone();
                         modal::confirm_in_window(
                             window,
-                            &format!("Remove {destination} from GitSync?"),
-                            macos::REMOVE_HOST_DETAIL,
+                            &title,
+                            detail,
                             "Remove",
                             move |cx| {
                                 model.update(cx, |model, cx| {
-                                    model.remove_destination(Some(&destination), cx);
+                                    model.remove_destination(destination.as_deref(), cx);
                                 });
                             },
                             cx,

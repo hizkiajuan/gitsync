@@ -514,6 +514,8 @@ pub(crate) const REMOVE_REPOSITORY_DETAIL: &str =
     "This removes only GitSync’s saved record and cached status. Repository files are not changed.";
 /// Detail text for removing a remote computer.
 pub(crate) const REMOVE_HOST_DETAIL: &str = "This stops monitoring every repository on this remote computer and removes GitSync’s saved records and cached statuses for them. Files on the remote computer are not changed.";
+/// Detail text for removing every repository on this Mac.
+pub(crate) const REMOVE_LOCAL_DETAIL: &str = "This stops monitoring every repository on this Mac and removes GitSync’s saved records and cached statuses for them. Repository files are not changed.";
 /// Detail text for resetting GitSync.
 pub(crate) const RESET_DETAIL: &str = "This removes GitSync’s monitored-repository list, settings, and cached statuses, and turns off launch at login. Repository files are not changed.";
 

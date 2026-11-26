@@ -1,0 +1,54 @@
+name: CI
+
+# The cheap checks that don't need macOS (format, dependency policy) run on Linux first. Every pull
+# request runs CI, docs-only ones included, because the main ruleset requires the `ci` check.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: rustup show active-toolchain
+      - uses: taiki-e/install-action@ab49d3c64680143e184118bed66a46419fc15519 # v2.90.5
+        with:
+          tool: cargo-deny
+      - run: cargo fmt --check
+      - run: cargo deny check
+
+  ci: # job id is part of the rust-cache key; renaming it starts a cold cache
+    needs: lint
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # bundle.sh counts commits for the build number
+          persist-credentials: false
+      # rustup installs the toolchain from rust-toolchain.toml on first use.
+      - run: rustup show active-toolchain
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+      - uses: taiki-e/install-action@ab49d3c64680143e184118bed66a46419fc15519 # v2.90.5
+        with:
+          tool: cargo-nextest,cargo-about
+      - run: cargo clippy --all-targets --all-features -- -D warnings
+      - run: cargo nextest run
+      - run: ./scripts/bundle.sh

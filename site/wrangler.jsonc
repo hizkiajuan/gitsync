@@ -1,0 +1,13 @@
+{
+  "name": "gitsync",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": { "enabled": true },
+  // A zone route, not a Custom Domain: a Custom Domain gets its own certificate, which puts the
+  // hostname in public Certificate Transparency logs. The route sits on a proxied
+  // `AAAA gitsync -> 100::` record (made through the Cloudflare API; wrangler doesn't create it)
+  // and is served under Universal SSL's *.hizkiajuan.com wildcard.
+  "routes": [{ "pattern": "gitsync.hizkiajuan.com/*", "zone_name": "hizkiajuan.com" }],
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+}

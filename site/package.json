@@ -1,0 +1,14 @@
+{
+  "name": "gitsync-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun dev.ts",
+    "build": "bun build.ts",
+    "build:ci": "bun build.ts && test -f dist/index.html",
+    "deploy": "bun run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.168.0"
+  }
+}

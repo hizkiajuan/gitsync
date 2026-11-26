@@ -1,0 +1,71 @@
+name: Bug report
+description: Something in GitSync does not work as documented.
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Do not report security problems here; see SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: GitSync version
+      description: Settings → Advanced → About, or the commit you built.
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "15.5"
+    validations:
+      required: true
+  - type: dropdown
+    id: arch
+    attributes:
+      label: Architecture
+      options:
+        - Apple Silicon
+        - Intel
+    validations:
+      required: true
+  - type: dropdown
+    id: location
+    attributes:
+      label: Where is the affected repository?
+      options:
+        - This Mac
+        - SSH computer
+        - Both
+        - Not repository-specific
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Add a local folder with …
+        2. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Add screenshots if it is a UI problem.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostic summary
+      description: Settings → Advanced → Copy Summary. It contains no paths, names, branches, remotes, or credentials.
+      render: text

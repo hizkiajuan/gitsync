@@ -1,0 +1,91 @@
+[package]
+name = "gitsync"
+version = "0.1.0"
+edition = "2024"
+description = "macOS menu bar app that shows which local and SSH Git repositories need a push, pull, or upstream fix."
+license = "MIT"
+repository = "https://github.com/hizkiajuan/gitsync"
+homepage = "https://gitsync.hizkiajuan.com"
+readme = "README.md"
+publish = false
+
+# hzkjn-release: the gate is green CI on the commit being released, since GitSync only builds on macOS.
+[package.metadata.release]
+check = ["scripts/ci-passed.sh"]
+
+[dependencies]
+block2 = "=0.6.2"
+gpui-kit = "=0.6.0"
+libc = "0.2"
+objc2 = "=0.6.3"
+objc2-app-kit = { version = "=0.3.2", default-features = false, features = [
+    "std",
+    "block2",
+    "objc2-core-foundation",
+    "NSAlert",
+    "NSApplication",
+    "NSAttributedString",
+    "NSButton",
+    "NSCell",
+    "NSColor",
+    "NSControl",
+    "NSFont",
+    "NSFontDescriptor",
+    "NSImage",
+    "NSPanel",
+    "NSResponder",
+    "NSRunningApplication",
+    "NSScreen",
+    "NSStatusBar",
+    "NSStatusBarButton",
+    "NSStatusItem",
+    "NSStringDrawing",
+    "NSTextField",
+    "NSView",
+    "NSWindow",
+] }
+objc2-foundation = { version = "=0.3.2", default-features = false, features = [
+    "std",
+    "objc2-core-foundation",
+    "NSArray",
+    "NSAttributedString",
+    "NSData",
+    "NSDictionary",
+    "NSError",
+    "NSGeometry",
+    "NSThread",
+    "NSObject",
+    "NSString",
+    "NSURL",
+] }
+raw-window-handle = "0.6"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["serde", "v4"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.dev]
+split-debuginfo = "unpacked"
+
+[profile.dev.package]
+gpui-component = { opt-level = 3 }
+gpui-kit = { opt-level = 3 }
+gpui-kit-assets = { opt-level = 3 }
+gpui-pre = { opt-level = 3 }
+gpui-pre-macros = { opt-level = 3 }
+gpui-pre-platform = { opt-level = 3 }
+rustybuzz = { opt-level = 3 }
+taffy = { opt-level = 3 }
+ttf-parser = { opt-level = 3 }
+# Dependencies keep line tables only (file and line in backtraces, no variable info): target/debug
+# shrinks a lot and rebuilds get faster. GitSync's own crate keeps full debug info.
+"*" = { debug = "line-tables-only" }
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+dbg_macro = "deny"
+todo = "deny"

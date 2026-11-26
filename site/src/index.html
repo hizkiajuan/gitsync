@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GitSync: see which repos need you</title>
+<meta name="description" content="A macOS menu bar app that watches the Git working trees you pick, on this Mac and over SSH, and shows which are ahead, behind, or stuck. It only reads.">
+<meta name="theme-color" content="#0b0c0e">
+<meta property="og:title" content="GitSync: see which repos need you">
+<meta property="og:description" content="A read-only macOS menu bar app for Git sync status, on this Mac and over SSH.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gitsync.hizkiajuan.com/">
+<meta property="og:image" content="https://gitsync.hizkiajuan.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="page">
+<header class="nav-edge">
+  <a class="wordmark" href="/"><img src="./assets/icon.svg" alt="" width="26" height="26">GitSync</a>
+  <a class="pill pill-line" href="https://github.com/hizkiajuan/gitsync">GitHub</a>
+</header>
+<main>
+<section class="hero">
+  <h1>See which repos need you.</h1>
+  <div>
+    <p class="lede">A macOS menu bar app that watches the Git working trees you pick, on this Mac and over SSH, and shows which are ahead, behind, or stuck. It only reads.</p>
+    <div class="acts"><a class="pill pill-ink" href="#install">Build from source</a><span class="hint"><span class="kbd">⌘G</span> opens it from any app</span></div>
+  </div>
+</section>
+<figure class="shot hero-shot">
+  <div class="frame"><picture><source srcset="./assets/hero-dark.webp" type="image/webp"><img src="./assets/hero-dark.jpg" width="2400" height="1500" alt="The GitSync panel open from the menu bar: 14 repositories, sync health at 50 percent, two problems and four that need action"></picture></div>
+</figure>
+<ul class="notes">
+  <li><b>One row per computer on the rail</b>This Mac and each SSH host, with a dot when one needs attention.</li>
+  <li><b>Problems first</b>No upstream, a deleted upstream, a merge halfway: these sort above everything else.</li>
+  <li><b>Counts you can trust</b>With consent it fetches upstream only, so ahead and behind match the remote.</li>
+</ul>
+
+<section class="tour" aria-label="Tour">
+  <div class="step">
+    <div>
+      <h2>Point it at your folders.</h2>
+      <p>Add a folder on this Mac, or an SSH computer and a path like <span class="mono">~/Git</span>. GitSync finds every working tree beneath it.</p>
+      <p>Add the same folder again later and it syncs instead of doubling up: new repositories join, a moved one keeps its name and settings, and ones that are gone drop off.</p>
+      <div class="fact">SSH runs in batch mode with your own <code>~/.ssh/config</code> and agent. No passwords are stored or asked for.</div>
+    </div>
+    <figure class="shot settings-shot"><div class="frame"><img src="./assets/cutout-settings-repositories-dark.webp" width="1520" height="1663" loading="lazy" alt="GitSync Settings, Repositories tab: the build-box computer expanded with six repositories, This Mac below"></div></figure>
+  </div>
+  <div class="step">
+    <div>
+      <h2>Test the connection before anything is added.</h2>
+      <p>Test Connection checks that the SSH login works and that Git is installed on the other side, so a typo shows up here and not later as an empty list.</p>
+      <div class="fact">Discovery skips <code>node_modules</code>, <code>.cache</code> and <code>Library</code>, and never follows symlinks out of the folder you chose.</div>
+    </div>
+    <figure class="shot ssh-shot"><div class="frame"><img src="./assets/cutout-add-ssh-computer-dark.webp" width="1240" height="1144" loading="lazy" alt="Add SSH Computer window: an SSH destination field, the folder to scan set to ~/Git, and a Test Connection button"></div></figure>
+  </div>
+</section>
+</div>
+
+<div class="page">
+<section class="band">
+  <div><h2>It never changes your repositories.</h2><p class="sub">GitSync tells you. The fix stays in your terminal, where you can see what it does.</p></div>
+  <ul class="never">
+    <li>No push, pull, merge, rebase, commit or checkout.</li>
+    <li>No edits, staging or deletes, and no <span class="mono">index.lock</span>.</li>
+    <li>Only the folders you chose, never through symlinks.</li>
+    <li>No passwords, tokens or private keys.</li>
+    <li>No account, analytics or telemetry.</li>
+    <li>Fetches only with your consent, upstream only.</li>
+  </ul>
+</section>
+<section class="band">
+  <div><h2>What a row can say.</h2><p class="sub">One status per repository, so the list reads at a glance.</p></div>
+  <table class="rows">
+    <tr><td><span class="st ok">Up to date</span></td><td>Branch and upstream are on the same commit.</td></tr>
+    <tr><td><span class="st ink">Push 3</span></td><td>Three local commits haven't reached the remote.</td></tr>
+    <tr><td><span class="st ink">Pull 2</span></td><td>The remote has two commits you don't have yet.</td></tr>
+    <tr><td><span class="st warn">Diverged</span></td><td>Both sides moved; it needs a merge or a rebase.</td></tr>
+    <tr><td><span class="st bad">Upstream needed</span></td><td>The branch has no upstream, so nothing is backed up.</td></tr>
+    <tr><td><span class="st bad">Upstream deleted</span></td><td>The remote branch is gone, often after a merged pull request.</td></tr>
+    <tr><td><span class="st info">2 uncommitted</span></td><td>Changed or untracked files no commit holds yet.</td></tr>
+    <tr><td><span class="st dim">Unverified</span></td><td>Offline or a fetch failed; the last counts stay, marked stale.</td></tr>
+  </table>
+</section>
+<section class="band" id="install">
+  <div><h2>Build it on your Mac.</h2><p class="sub">Source only for now. The app is signed ad hoc, so it runs on the Mac that built it. Signed downloads will follow on the releases page.</p>
+    <ul class="req"><li>macOS 13 or later, Apple Silicon</li><li>Xcode Command Line Tools and rustup</li><li>Rust installs itself from <span class="mono">rust-toolchain.toml</span></li></ul></div>
+  <pre class="code"><span class="p">$ </span>git clone https://github.com/hizkiajuan/gitsync.git
+<span class="p">$ </span>cd gitsync
+<span class="p">$ </span>GITSYNC_BUILD_PROFILE=release ./scripts/bundle.sh
+<span class="p">$ </span>mv dist/GitSync.app /Applications/
+<span class="p">$ </span>open /Applications/GitSync.app</pre>
+</section>
+<section class="band about" id="about">
+  <div><h2>Open source, built in the open.</h2></div>
+  <div>
+    <p>GitSync started on a desk with a laptop and a build box: repositories on both, and no quick way to see which ones still had commits that never left the machine.</p>
+    <p><b>Juan</b> builds small tools for everyday work and publishes them at hizkiajuan.com. GitSync is MIT licensed and maintained by Juan and contributors.</p>
+    <div class="routes">
+      <a href="https://github.com/hizkiajuan/gitsync/issues"><b>Report a bug</b><span>GitHub issues, with Copy Summary</span></a>
+      <a href="https://github.com/hizkiajuan/gitsync/blob/main/CONTRIBUTING.md"><b>Contribute</b><span>Read CONTRIBUTING first</span></a>
+      <a href="https://hizkiajuan.com"><b>Say hello</b><span>hizkiajuan.com</span></a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="foot-line">
+  <a class="wordmark" href="/"><img src="./assets/icon.svg" alt="" width="20" height="20">GitSync <span class="mono ver">v0.1.0</span></a>
+  <nav aria-label="Footer"><a href="https://github.com/hizkiajuan/gitsync">GitHub</a><a href="https://github.com/hizkiajuan/gitsync/releases">Releases</a><a href="#install">Install</a><a href="#about">About</a></nav>
+</footer>
+</div>
+</body>
+</html>

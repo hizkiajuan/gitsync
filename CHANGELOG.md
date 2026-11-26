@@ -1,9 +1,5 @@
 # Changelog
 
-## 0.1.0 (unreleased)
-
-First public release.
-
 ### Features
 
 - Menu bar panel that shows which Git working trees need a push, pull, or

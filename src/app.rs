@@ -893,7 +893,8 @@ impl AppModel {
                 actions: Vec::new(),
             });
         } else {
-            cx.dismiss_system_notification("notifications-enabled");
+            cx.dismiss_system_notification("notifications-enabled")
+                .detach();
         }
         self.persist();
         self.publish(cx);
@@ -930,7 +931,7 @@ impl AppModel {
             "GitSync diagnostic summary\n\
              App version: {}\n\
              {}\n\
-             GPUI Kit: 0.6.0\n\
+             GPUI Kit: {}\n\
              Config schema: {}\n\
              Repositories: {} total, {} actionable, {} with problems, {} uncommitted, {} unverified\n\
              Commits to push / pull: {} / {}\n\
@@ -948,6 +949,7 @@ impl AppModel {
              Data location: ~/Library/Application Support/GitSync",
             env!("CARGO_PKG_VERSION"),
             crate::macos::diagnostic_environment(),
+            GPUI_KIT_VERSION,
             SCHEMA_VERSION,
             summary.total,
             summary.actionable,
@@ -2446,6 +2448,9 @@ fn apply_theme_preference(preference: ThemePreference, cx: &mut App) {
     Theme::change(mode, None, cx);
 }
 
+/// The pinned GPUI Kit version, shown in the diagnostic summary. A test keeps it equal to `Cargo.toml`.
+const GPUI_KIT_VERSION: &str = "0.11.0";
+
 /// Names of the themes GitSync installs over GPUI Kit's defaults.
 const DARK_PALETTE_NAME: &str = "GitSync Dark";
 const LIGHT_PALETTE_NAME: &str = "GitSync Light";
@@ -2533,6 +2538,12 @@ mod tests {
     use gitsync::domain::{SynchronizationState, WorkingTreeState};
 
     use super::*;
+
+    #[test]
+    fn diagnostic_gpui_kit_version_matches_the_cargo_pin() {
+        let pin = format!("gpui-kit = \"={GPUI_KIT_VERSION}\"");
+        assert!(include_str!("../Cargo.toml").contains(&pin));
+    }
 
     #[test]
     fn stale_status_is_unverified_unless_commits_are_known() {

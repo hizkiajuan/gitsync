@@ -49,7 +49,7 @@ GitSync stays a read-only monitor. It will not:
 - Rust 1.98.1, installed automatically through `rust-toolchain.toml`
 - `/usr/bin/git`, or another executable selected and tested in GitSync Settings
 
-GPUI Kit 0.6.0 is pinned in `Cargo.toml` and `Cargo.lock`.
+GPUI Kit 0.11.0 is pinned in `Cargo.toml` and `Cargo.lock`.
 The macOS 13 deployment floor is not yet a claim of a complete version matrix;
 each supported macOS version and architecture still requires its release smoke
 run.

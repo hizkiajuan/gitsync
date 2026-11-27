@@ -2024,7 +2024,7 @@ pub(crate) fn open_at(
     }
 
     let options = WindowOptions {
-        window_bounds: Some(WindowBounds::centered(size(px(640.0), px(680.0)), cx)),
+        window_bounds: Some(WindowBounds::centered(None, size(px(640.0), px(680.0)), cx)),
         window_min_size: Some(size(px(560.0), px(440.0))),
         titlebar: Some(TitlebarOptions {
             title: Some("GitSync Settings".into()),
@@ -2075,7 +2075,7 @@ pub(crate) fn open_remote(model: Entity<AppModel>, cx: &mut App) {
     }
 
     let options = WindowOptions {
-        window_bounds: Some(WindowBounds::centered(size(px(500.0), px(420.0)), cx)),
+        window_bounds: Some(WindowBounds::centered(None, size(px(500.0), px(420.0)), cx)),
         titlebar: Some(TitlebarOptions {
             title: Some("Add SSH Computer".into()),
             ..TitlebarOptions::default()
